@@ -80,6 +80,39 @@
       max-width: 420px;
     }
 
+    /* ── Explainer ────────────────────────────────── */
+    .explainer {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 28px 28px 24px;
+      margin-bottom: 32px;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .explainer h2 {
+      font-family: 'Belleza', serif;
+      font-size: 13px;
+      font-weight: 400;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--text-muted);
+      margin-bottom: 2px;
+    }
+
+    .explainer p {
+      font-size: 14px;
+      color: var(--text-muted);
+      line-height: 1.7;
+    }
+
+    .explainer p strong {
+      color: var(--text);
+      font-weight: 500;
+    }
+
     /* ── Cards ────────────────────────────────────── */
     .cards {
       display: grid;
@@ -196,6 +229,25 @@
     <div class="hero">
       <h1>App Demos</h1>
       <p class="subtitle"> Apps for the curious. Explore a pre-filled demo.</p>
+    </div>
+
+    <div class="explainer">
+      <h2>What is this?</h2>
+      <p>
+        Each demo comes pre-loaded with 90 days of realistic sample data so you can 
+        explore insights, patterns, and every feature right away, 
+        with no sign-up or setup required.
+      </p>
+      <p>
+        You have <strong>3 days</strong> to explore from whenever you first open a demo.
+        After that, feel free to reach out to the developer for additional access if you'd
+        like to continue using the app. 
+      </p>
+      <p>
+        The sample data and the data that you input into each app
+        lives only on your device and disappears when you clear your
+        browser data. Nothing is stored anywhere else.
+      </p>
     </div>
 
     <div class="cards">
