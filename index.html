@@ -3,122 +3,179 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>The Self Study — App Demos</title>
+  <title>App Demos — True Fork</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Belleza&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
-    body {
-      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-      background: #F8F6F3;
-      color: #59572E;
-      min-height: 100vh;
+    :root {
+      --bg:            #1B2318;
+      --bg-card:       #232E1F;
+      --bg-card-hover: #2A3826;
+      --text:          #E6E1D4;
+      --text-muted:    #8A9283;
+      --border:        rgba(230, 225, 212, 0.09);
+      --border-hover:  rgba(230, 225, 212, 0.22);
+      --green:         #6B8F5E;
+      --olive:         #96935A;
     }
 
+    body {
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* ── Header ───────────────────────────────────── */
     header {
-      max-width: 700px;
+      max-width: 680px;
       margin: 0 auto;
-      padding: 32px 24px 0;
+      padding: 36px 24px 0;
+      width: 100%;
     }
 
     .wordmark {
-      font-size: 12px;
-      letter-spacing: 0.1em;
+      font-family: 'Belleza', serif;
+      font-size: 11px;
+      letter-spacing: 0.18em;
       text-transform: uppercase;
-      color: #7A7A7A;
+      color: var(--text-muted);
       text-decoration: none;
+      transition: color 0.15s;
+    }
+    .wordmark:hover { color: var(--text); }
+
+    /* ── Main ─────────────────────────────────────── */
+    main {
+      max-width: 680px;
+      margin: 0 auto;
+      padding: 56px 24px 80px;
+      width: 100%;
+      flex: 1;
     }
 
-    main {
-      max-width: 700px;
-      margin: 0 auto;
-      padding: 52px 24px 72px;
+    .hero {
+      margin-bottom: 48px;
     }
 
     h1 {
-      font-size: 30px;
-      font-weight: 700;
-      color: #59572E;
-      margin-bottom: 10px;
-      letter-spacing: -0.02em;
+      font-family: 'Belleza', serif;
+      font-size: 36px;
+      font-weight: 400;
+      color: var(--text);
+      margin-bottom: 12px;
+      letter-spacing: 0.01em;
+      line-height: 1.2;
     }
 
     .subtitle {
       font-size: 15px;
-      color: #7A7A7A;
-      margin-bottom: 44px;
-      line-height: 1.5;
+      color: var(--text-muted);
+      line-height: 1.65;
+      max-width: 420px;
     }
 
+    /* ── Cards ────────────────────────────────────── */
     .cards {
       display: grid;
       grid-template-columns: 1fr;
-      gap: 16px;
+      gap: 14px;
     }
 
-    @media (min-width: 580px) {
+    @media (min-width: 540px) {
       .cards { grid-template-columns: 1fr 1fr; }
     }
 
     .card {
-      background: #FFFFFF;
-      border: 1px solid #E8E4DF;
-      border-radius: 14px;
-      padding: 28px 24px 24px;
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 28px 24px 22px;
       text-decoration: none;
       display: flex;
       flex-direction: column;
-      transition: box-shadow 0.18s ease, transform 0.18s ease;
+      transition: background 0.2s ease, border-color 0.2s ease, transform 0.18s ease;
     }
 
     .card:hover {
-      box-shadow: 0 6px 20px rgba(61, 61, 40, 0.11);
+      background: var(--bg-card-hover);
       transform: translateY(-2px);
     }
 
-    .card.cadence:hover { border-color: #3F592E; }
-    .card.att:hover     { border-color: #716E29; }
+    .card.cadence:hover { border-color: var(--green); }
+    .card.att:hover     { border-color: var(--olive); }
 
     .card-label {
-      font-size: 11px;
-      letter-spacing: 0.09em;
+      font-size: 10px;
+      letter-spacing: 0.12em;
       text-transform: uppercase;
       font-weight: 600;
       margin-bottom: 14px;
     }
-    .cadence .card-label { color: #3F592E; }
-    .att     .card-label { color: #716E29; }
+    .cadence .card-label { color: var(--green); }
+    .att     .card-label { color: var(--olive); }
 
     .card h2 {
-      font-size: 22px;
-      font-weight: 700;
-      color: #3D3A1A;
+      font-family: 'Belleza', serif;
+      font-size: 24px;
+      font-weight: 400;
+      color: var(--text);
       margin-bottom: 10px;
-      letter-spacing: -0.02em;
+      letter-spacing: 0.01em;
     }
 
     .card p {
       font-size: 14px;
-      color: #7A7A7A;
-      line-height: 1.65;
+      color: var(--text-muted);
+      line-height: 1.7;
       flex: 1;
-      margin-bottom: 22px;
+      margin-bottom: 24px;
     }
 
     .card-cta {
-      font-size: 13px;
+      font-size: 12px;
       font-weight: 600;
+      letter-spacing: 0.04em;
       display: inline-flex;
       align-items: center;
-      gap: 4px;
+      gap: 5px;
+      transition: gap 0.15s;
     }
-    .cadence .card-cta { color: #3F592E; }
-    .att     .card-cta { color: #716E29; }
+    .card:hover .card-cta { gap: 8px; }
+    .cadence .card-cta { color: var(--green); }
+    .att     .card-cta { color: var(--olive); }
 
-    footer {
-      text-align: center;
-      padding-bottom: 40px;
+    /* ── Divider ──────────────────────────────────── */
+    .divider {
+      height: 1px;
+      background: var(--border);
+      margin: 52px 0 40px;
+    }
+
+    /* ── Note ─────────────────────────────────────── */
+    .demo-note {
       font-size: 12px;
-      color: #B0AD95;
+      color: var(--text-muted);
+      line-height: 1.6;
+    }
+    .demo-note strong {
+      color: var(--text);
+      font-weight: 500;
+    }
+
+    /* ── Footer ───────────────────────────────────── */
+    footer {
+      max-width: 680px;
+      margin: 0 auto;
+      padding: 0 24px 44px;
+      width: 100%;
+      font-size: 11px;
+      color: var(--text-muted);
     }
 
     footer a {
@@ -126,7 +183,7 @@
       text-decoration: none;
       transition: color 0.15s;
     }
-    footer a:hover { color: #59572E; }
+    footer a:hover { color: var(--text); }
   </style>
 </head>
 <body>
@@ -136,8 +193,10 @@
   </header>
 
   <main>
-    <h1>App Demos</h1>
-    <p class="subtitle">Two apps for the quietly curious. Click to explore a pre-filled demo.</p>
+    <div class="hero">
+      <h1>App Demos</h1>
+      <p class="subtitle">Two apps for the quietly curious. Explore a pre-filled demo — no sign-up, no setup.</p>
+    </div>
 
     <div class="cards">
 
@@ -156,6 +215,13 @@
       </a>
 
     </div>
+
+    <div class="divider"></div>
+
+    <p class="demo-note">
+      <strong>3-day access.</strong> Each demo is pre-loaded with 90 days of sample data so you can explore insights right away.
+      When the demo ends, click through to get the real app — free, no account required.
+    </p>
   </main>
 
   <footer>
