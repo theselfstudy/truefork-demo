@@ -23,8 +23,8 @@
     }
 
     body {
-      font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
       background: var(--bg);
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
       color: var(--text);
       min-height: 100vh;
       display: flex;
@@ -288,5 +288,123 @@
     <a href="https://truefork.dev">truefork.dev</a>
   </footer>
 
+
+  <script>
+  (function () {
+    const cvs = document.createElement('canvas');
+    cvs.style.cssText = 'position:fixed;top:0;left:0;width:100%;height:100%;z-index:-1;pointer-events:none;';
+    document.body.prepend(cvs);
+
+    const ctx = cvs.getContext('2d');
+    let W, H;
+    const resize = () => { W = cvs.width = innerWidth; H = cvs.height = innerHeight; };
+    resize();
+    addEventListener('resize', resize);
+
+    // Smoothed cursor — starts centered
+    let cx = innerWidth / 2,  cy = innerHeight / 2;
+    let tx = cx, ty = cy;
+
+    // Burst queue — each entry is {x, y} of a click/tap
+    const bursts = [];
+
+    addEventListener('mousemove', e => { tx = e.clientX; ty = e.clientY; });
+    addEventListener('touchmove', e => { tx = e.touches[0].clientX; ty = e.touches[0].clientY; }, { passive: true });
+    addEventListener('click', e => { bursts.push({ x: e.clientX, y: e.clientY }); });
+    addEventListener('touchstart', e => { bursts.push({ x: e.touches[0].clientX, y: e.touches[0].clientY }); }, { passive: true });
+
+    const G = [107, 143, 94];   // --green
+    const O = [150, 147, 90];   // --olive
+    const col = (c, a) => `rgba(${c[0]},${c[1]},${c[2]},${a})`;
+
+    // ── Embers ──────────────────────────────────────────────────
+    // ↓ Edit these to tune the look
+    const EMBER_COUNT  = 500;          // number of particles
+    const EMBER_R_MIN  = 0.8;         // smallest dot radius (px)
+    const EMBER_R_MAX  = 2.0;         // largest dot radius  (px)
+    const EMBER_OP_MIN = 0.22;        // dimmest opacity  (0–1)
+    const EMBER_OP_MAX = 0.67;        // brightest opacity (0–1)
+    // ↑ ──────────────────────────────
+
+    const mkEmber = (x, y) => ({
+      x:    x ?? Math.random() * W,
+      y:    y ?? Math.random() * H,
+      vx:   (Math.random() - 0.5) * 0.2,
+      vy:   -(Math.random() * 0.6 + 0.4),
+      r:    Math.random() * (EMBER_R_MAX - EMBER_R_MIN) + EMBER_R_MIN,
+      op:   Math.random() * (EMBER_OP_MAX - EMBER_OP_MIN) + EMBER_OP_MIN,
+      c:    Math.random() > 0.5 ? G : O,
+      age:  0,
+      life: Math.random() * 700 + 600,
+    });
+
+    const embers = Array.from({ length: EMBER_COUNT }, mkEmber);
+
+    const HOVER_R  = 120;   // repulsion radius (px)
+    const BURST_R  = 200;   // burst radius (px)
+    const BURST_F  = 5.5;   // burst kick strength
+
+    const tickEmbers = () => {
+      // Process any pending bursts
+      for (let i = 0; i < embers.length; i++) {
+        const e = embers[i];
+
+        // Burst kicks — outward impulse from each click/tap
+        for (const b of bursts) {
+          const dx = e.x - b.x, dy = e.y - b.y;
+          const d2 = dx * dx + dy * dy;
+          if (d2 < BURST_R * BURST_R && d2 > 0) {
+            const d = Math.sqrt(d2);
+            const force = (1 - d / BURST_R) * BURST_F;
+            e.vx += dx / d * force;
+            e.vy += dy / d * force;
+          }
+        }
+
+        // Hover repulsion — gentle push away from cursor
+        const dx = e.x - cx, dy = e.y - cy;
+        const d2 = dx * dx + dy * dy;
+        if (d2 < HOVER_R * HOVER_R && d2 > 0) {
+          const d = Math.sqrt(d2);
+          const push = (1 - d / HOVER_R) * 0.12;
+          e.vx += dx / d * push;
+          e.vy += dy / d * push;
+        }
+
+        e.vx *= 0.97;
+        e.vy  = e.vy * 0.97 - 0.03;
+        const spd = Math.hypot(e.vx, e.vy);
+        if (spd > 4) { e.vx *= 4 / spd; e.vy *= 4 / spd; }
+        e.x += e.vx; e.y += e.vy; e.age++;
+        if (e.y < -10 || e.age > e.life || e.x < -20 || e.x > W + 20)
+          embers[i] = mkEmber(Math.random() * W, H + 5);
+      }
+      bursts.length = 0; // clear after applying
+    };
+
+    const drawEmbers = () => {
+      for (const e of embers) {
+        const t = e.age / e.life;
+        const fade = Math.min(t / 0.12, 1) * Math.min((1 - t) / 0.15, 1);
+        ctx.beginPath();
+        ctx.arc(e.x, e.y, e.r, 0, Math.PI * 2);
+        ctx.fillStyle = col(e.c, e.op * fade);
+        ctx.fill();
+      }
+    };
+
+    // ── Loop ────────────────────────────────────────────────────
+    const loop = () => {
+      cx += (tx - cx) * 0.07;
+      cy += (ty - cy) * 0.07;
+      ctx.fillStyle = '#1B2318';
+      ctx.fillRect(0, 0, W, H);
+      tickEmbers();
+      drawEmbers();
+      requestAnimationFrame(loop);
+    };
+    loop();
+  })();
+  </script>
 </body>
 </html>
